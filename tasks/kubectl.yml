@@ -1,0 +1,34 @@
+---
+# kubctl config for ansible_ssh_user
+
+- name: "create /home/{{ansible_ssh_user}}/.kube folder"
+  file:
+    state: directory
+    path: "/home/{{ansible_ssh_user}}/.kube"
+    owner: "{{ansible_ssh_user}}"
+    group: "{{ansible_ssh_user}}"
+- name: "copy kubeconfig"
+  become: true
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "/home/{{ansible_ssh_user}}//.kube/config"
+    owner: "{{ansible_ssh_user}}"
+    group: "{{ansible_ssh_user}}"
+    remote_src: true
+    mode: "0600"
+- name: "set KUBECONFIG environment variable"
+  lineinfile:
+    path: "/home/{{ansible_ssh_user}}/.bashrc"
+    regexp: "^export KUBECONFIG="
+    line: "export KUBECONFIG=~/.kube/config"
+- name: "enable k3s completion"
+  lineinfile:
+    path: "/home/{{ansible_ssh_user}}/.bashrc"
+    regexp: '^\. <(k3s completion bash)'
+    line: ". <(k3s completion bash)"
+- name: "enable kubectl completion"
+  lineinfile:
+    path: "/home/{{ansible_ssh_user}}/.bashrc"
+    regexp: '^\. <(kubectl completion bash)'
+    line: ". <(kubectl completion bash)"
+    insertafter: "^export KUBECONFIG="

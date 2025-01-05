@@ -1,0 +1,11 @@
+k3s_cluster:
+  children:
+    server:
+      hosts:
+        192.168.124.23:
+
+all:
+  vars:
+    ansible_user: ansible
+    ansible_ssh_private_key_file: ./ansible.key
+

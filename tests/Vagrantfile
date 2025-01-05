@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bookworm64"
+
+  #config.vm.network "private_network", ip: "192.168.33.10"
+  #config.vm.disk :disk, size: "10GB", name: "extra_storage"
+
+  config.vm.provider "libvirt" do |vb|
+     #vb.gui = false
+     vb.memory = "2048"
+  end
+
+  # To mount nfs shared folder:
+  # sudo firewall-cmd  --permanent --zone=libvirt --add-port=2049/tcp
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update 
+    apt-get upgrade -y
+    adduser ansible
+    mkdir -p /home/ansible/.ssh
+    cat /vagrant/ansible.key.pub >> /home/ansible/.ssh/authorized_keys
+    chown ansible /home/ansible/.ssh/authorized_keys
+    chgrp ansible /home/ansible/.ssh/authorized_keys
+    echo "ansible ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ansible
+  SHELL
+
+end

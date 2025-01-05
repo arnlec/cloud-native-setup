@@ -1,0 +1,49 @@
+---
+- block:
+    - name: Create namespace argocd
+      k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: argocd
+    - name: Get argocd manifests
+      get_url:
+        url: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+        dest: /tmp/install.yaml
+    - name: Apply argocd manifests
+      k8s:
+        state: present
+        src: /tmp/install.yaml
+        namespace: argocd
+    - name: Disable TLS
+      k8s:
+        state: patched
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: argocd-server
+            namespace: argocd
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: argocd-server
+                    args: ["/usr/local/bin/argocd-server", "--insecure"]
+    - name: Get argocd ingress manifest
+      template:
+        src: ./argocd-ingress.yaml.j2
+        dest: /tmp/argocd-ingress.yaml
+    - name: Create IngressRoute
+      k8s:
+        state: present
+        src: /tmp/argocd-ingress.yaml
+        namespace: argocd
+    - name: Patch IngressRoute
+      k8s:
+        state: patched
+        src: /tmp/argocd-ingress.yaml
+        namespace: argocd
+  run_once: true

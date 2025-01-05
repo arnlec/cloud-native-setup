@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: argocd-k3s-dev
+    namespace: argocd
+data:
+  tls.crt: {{argocd_cert}}
+  tls.key: {{argocd_key}}
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{argocd_domain}}`)
+      priority: 10
+      services:
+      - kind: Service
+        name: argocd-server
+        port: 80
+    - kind: Rule
+      match: Host(`{{argocd_domain}}`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: argocd-server
+          port: 80
+          scheme: h2c
+  tls:
+    secretName: argocd-k3s-dev
+    domains:
+      - main: k3s.dev
+        sans:
+          - "{{argocd_domain}}"
+          - k3s.dev

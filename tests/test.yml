@@ -1,0 +1,13 @@
+---
+- hosts: server
+  vars:
+    k3s_version: v1.31.1+k3s1
+    k3s_become: true
+    argocd_domain: "argocd.k3s.dev"
+    argocd_cert: "{{ lookup('file', './certs/argocd.k3s.dev.crt') }}"
+    argocd_key: "{{ lookup('file', './certs/argocd.k3s.dev.key') }}"
+#    token: "mytoken"
+#    extra_server_args: ""
+    
+  roles:
+    - cloud-native-setup
