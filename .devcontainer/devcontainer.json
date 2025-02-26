@@ -1,0 +1,28 @@
+{
+    "name": "Ansible Development Environment",
+    "image": "quay.io/ansible/ansible-runner:latest",
+    "runArgs": ["--privileged"],
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "redhat.ansible",
+                "ms-python.python"
+            ]
+        }
+    },
+    "postCreateCommand": "pip install --user ansible ansible-lint",
+    "remoteUser": "root",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace",
+    "features": {
+        "podman": "latest"
+    }
+}
+}
