@@ -14,15 +14,12 @@
                 "ms-python.python"
             ]
         }
+        }
     },
     "postCreateCommand": "pip install --user ansible ansible-lint",
     "remoteUser": "root",
     "mounts": [
         "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
     ],
-    "workspaceFolder": "/workspace",
-    "features": {
-        "podman": "latest"
-    }
-}
+    "workspaceFolder": "/workspace"
 }
