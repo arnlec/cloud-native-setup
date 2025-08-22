@@ -1,6 +1,8 @@
 Role Name
 =========
 
+[![Ansible Lint](https://github.com/arnlec/cloud-native-setup/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/arnlec/cloud-native-setup/actions/workflows/ansible-lint.yml)
+
 This role allow to deploy a cloud native environment based on K3S 
 
 Requirements
@@ -42,5 +44,23 @@ BSD
 
 Author Information
 ------------------
+
+## Development
+
+### Code Quality
+
+This repository uses [ansible-lint](https://ansible-lint.readthedocs.io/) to ensure code quality and Ansible best practices. The linting process runs automatically on every push via GitHub Actions.
+
+To run ansible-lint locally:
+
+```bash
+# Install ansible-lint
+pip install ansible-lint
+
+# Run linting
+ansible-lint .
+```
+
+The ansible-lint configuration can be found in `.ansible-lint` file.
 
 

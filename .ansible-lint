@@ -1,0 +1,28 @@
+---
+# ansible-lint configuration file
+skip_list:
+  - role-name  # Skip galaxy role naming requirements for now
+  - meta-incorrect  # Skip metadata company field requirement  
+  - meta-no-tags  # Skip galaxy tag formatting requirements
+  - yaml[trailing-spaces]  # Skip trailing spaces for now
+  - name[casing]  # Skip task name casing requirements for now
+  - fqcn[action-core]  # Skip FQCN requirements for builtin actions for now
+  - fqcn[action]  # Skip FQCN requirements for actions for now
+  - jinja[spacing]  # Skip Jinja spacing requirements for now
+  - name[template]  # Skip name template requirements for now
+  
+# Configure which files to lint
+exclude_paths:
+  - .git/
+  - tests/.vagrant/
+  
+# Warn about these issues but don't fail
+warn_list:
+  - risky-file-permissions  # Warn about file permissions
+  - yaml[new-line-at-end-of-file]  # Warn about newlines
+  - key-order[task]  # Warn about task key ordering
+  - name[missing]  # Warn about missing task names
+  
+# Configure parsers
+use_default_rules: true
+verbosity: 1
