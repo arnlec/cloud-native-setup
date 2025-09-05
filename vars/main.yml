@@ -1,2 +1,12 @@
 ---
 # vars file for cloud-native-setup
+flux_architecture_map:
+  amd64: amd64
+  arm: arm64
+  x86_64: amd64
+  armv6l: armv6
+  armv7l: armv7
+  aarch64: arm64
+  32-bit: "386"
+  64-bit: amd64
+flux_url: "https://github.com/fluxcd/flux2/releases/download/v{{ flux_version }}/flux_{{ flux_version }}_{{ ansible_system | lower }}_{{ flux_architecture_map[ansible_architecture] }}.tar.gz"

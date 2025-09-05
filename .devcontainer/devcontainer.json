@@ -19,7 +19,7 @@
     "postCreateCommand": "pip install --user ansible ansible-lint",
     "remoteUser": "root",
     "mounts": [
-        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+        "source=${localWorkspaceFolder},target=/workspace/cloud-native-setup,type=bind,consistency=cached"
     ],
-    "workspaceFolder": "/workspace"
+    "workspaceFolder": "/workspace/cloud-native-setup"
 }

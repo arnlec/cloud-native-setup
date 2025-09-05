@@ -6,8 +6,7 @@
     argocd_domain: "argocd.k3s.dev"
     argocd_cert: "{{ lookup('file', './certs/argocd.k3s.dev.crt') }}"
     argocd_key: "{{ lookup('file', './certs/argocd.k3s.dev.key') }}"
-#    token: "mytoken"
-#    extra_server_args: ""
+
     
   roles:
     - cloud-native-setup

@@ -1,10 +1,15 @@
 ---
 # tasks file for cloud-native-setup
 - name: prerequisites
-  include_tasks: prerequisites.yml
+  ansible.builtin.import_tasks: prerequisites.yml
 
 - name: enable kubectl for ansible user
-  include_tasks: kubectl.yml
+  ansible.builtin.import_tasks: kubectl.yml
 
 - name: install argocd
-  include_tasks: argocd.yml
+  ansible.builtin.import_tasks: argocd.yml
+  when: argocd_enabled
+
+- name: install flux
+  ansible.builtin.import_tasks: flux.yml
+  when: flux_enabled

@@ -1,2 +1,5 @@
 ---
 # defaults file for cloud-native-setup
+argocd_enabled: false
+flux_enabled: true
+flux_version: 2.6.4
