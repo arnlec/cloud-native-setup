@@ -2,20 +2,38 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
+  is_libvirt_provider = Vagrant.has_plugin?("vagrant-libvirt")
   config.vm.box = "debian/bookworm64"
+
 
   #config.vm.network "private_network", ip: "192.168.33.10"
   #config.vm.disk :disk, size: "10GB", name: "extra_storage"
 
-  config.vm.provider "virtualbox" do |vb|
-     vb.gui = false
-     vb.memory = "2048"
-     vb.cpus = "2"
+  if is_libvirt_provider == true
+    config.vm.synced_folder ".", "/vagrant", type: "rsync"
+    config.vm.provider "libvirt" do |vb|
+       vb.driver = "qemu"
+       vb.uri = "qemu:///session" 
+       vb.memory = "2048"
+       vb.cpus = "2"
+    end
+    config.vm.define "k3s-dev" do |k3s|
+      #k3s.vm.network :private_network, ip: "192.168.99.10"
+      k3s.vm.hostname = "k3s.dev"
+    end
   end
 
-  config.vm.define "k3s-dev" do |k3s|
-    k3s.vm.network :private_network, ip: "192.168.99.10"
-    k3s.vm.hostname = "k3s.dev"
+  if is_libvirt_provider == false
+    config.vm.provider "virtualbox" do |vb|
+       vb.gui = false
+      vb.memory = "2048"
+      vb.cpus = "2"
+    end
+
+    config.vm.define "k3s-dev" do |k3s|
+      k3s.vm.network :private_network, ip: "192.168.99.10"
+      k3s.vm.hostname = "k3s.dev"
+    end
   end
 
   # To mount nfs shared folder:
