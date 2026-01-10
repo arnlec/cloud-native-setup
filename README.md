@@ -17,8 +17,10 @@ Role Variables
 * argocd_domain
 * argocd_cert
 * argocd_key
-* flux_enabled (default: false)
+* flux_enabled (default: true)
 * flux_version: (defaut: 2.6.4)
+* longhorn_enabled (default: true)
+* longhorn_version (default: 1.10.0)
 
 
 
